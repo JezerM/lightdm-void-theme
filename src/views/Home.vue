@@ -1,18 +1,136 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="home">
+    <Addons />
+    <DateTime />
+    <Card
+      id="login-card"
+      :class="{
+        success: store.authenticated == 1,
+        failure: store.authenticated == 2,
+      }"
+      radius="5px"
+    >
+      <div id="login-header">
+        <UserImage />
+        <LoginForm id="LoginForm" />
+      </div>
+
+      <div id="login-footer">
+        <LoginUtils />
+        <Power />
+      </div>
+    </Card>
+
+    <button id="settings-button" @click="$router.push('/config')">
+      Config
+    </button>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import HelloWorld from "@/components/HelloWorld.vue";
+import Card from "@/components/Card.vue";
+import DateTime from "@/components/DateTime.vue";
+import LoginForm from "@/components/LoginForm.vue";
+import LoginUtils from "@/components/LoginUtils.vue";
+import Power from "@/components/Power.vue";
+import Addons from "@/components/Addons.vue";
+import UserImage from "@/components/UserImage.vue";
+import { store } from "@/store";
 
 @Options({
   components: {
     HelloWorld,
+    Card,
+    DateTime,
+    LoginForm,
+    LoginUtils,
+    Power,
+    UserImage,
+    Addons,
+  },
+  data() {
+    return { store };
   },
 })
 export default class Home extends Vue {}
 </script>
+
+<style lang="less">
+#home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: space-around;
+  width: 100vw;
+}
+
+#login-card {
+  max-width: 25em;
+  max-height: 15em;
+  padding-bottom: 1em;
+  background-color: #465258ee;
+  transition: background-color ease-in-out 0.25s;
+
+  * {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  &.success {
+    background-color: #5f6d67;
+  }
+  &.failure {
+    background-color: #59454b;
+  }
+}
+
+#login-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom-color: #5c6a72;
+  border-bottom-style: inset;
+  border-bottom-width: 2px;
+  padding-bottom: 10px;
+}
+#login-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+#LoginForm {
+  width: 60%;
+}
+
+#settings-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 1.1rem;
+  padding: 0.5em;
+  font-size: 1.2em;
+  font-family: inherit;
+  opacity: 0;
+
+  background-color: #465258bb;
+  color: #d3c6aa;
+  outline: 0;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  transition: all ease-in-out 0.25s;
+  border-color: #5c6a72;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    border-color: #d3c6aa !important;
+    opacity: 1;
+  }
+}
+</style>
