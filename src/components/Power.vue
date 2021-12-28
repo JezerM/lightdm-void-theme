@@ -6,7 +6,7 @@
       @click="shutdown()"
       v-if="can_shutdown"
     >
-      P
+      <SvgIcon type="mdi" :path="shutdown_icon" />
     </button>
     <button
       id="restart-button"
@@ -14,7 +14,7 @@
       @click="restart()"
       v-if="can_restart"
     >
-      R
+      <SvgIcon type="mdi" :path="restart_icon" />
     </button>
     <button
       id="suspend-button"
@@ -22,7 +22,7 @@
       @click="suspend()"
       v-if="can_suspend"
     >
-      S
+      <SvgIcon type="mdi" :path="suspend_icon" />
     </button>
     <button
       id="hibernate-button"
@@ -30,17 +30,26 @@
       @click="hibernate()"
       v-if="can_hibernate"
     >
-      H
+      <SvgIcon type="mdi" :path="hibernate_icon" />
     </button>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiPower, mdiRestart, mdiPowerSleep, mdiPowerCycle } from "@mdi/js";
 
 @Options({
+  components: {
+    SvgIcon,
+  },
   data() {
     return {
+      shutdown_icon: mdiPower,
+      restart_icon: mdiRestart,
+      suspend_icon: mdiPowerSleep,
+      hibernate_icon: mdiPowerCycle,
       can_shutdown: window.lightdm?.can_shutdown,
       can_restart: window.lightdm?.can_restart,
       can_suspend: window.lightdm?.can_suspend,
@@ -75,6 +84,10 @@ export default class Power extends Vue {}
   flex-direction: row;
   align-items: center;
   gap: 0.3em;
+
+  button {
+    display: flex;
+  }
 }
 button {
   background-color: transparent;

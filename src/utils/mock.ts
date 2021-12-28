@@ -129,6 +129,7 @@ class Greeter implements GreeterClass {
     if (quantity < 0) quantity = 0;
     else if (quantity > 100) quantity = 100;
     this._brightness = quantity;
+    this.brightness_update._emit();
   }
 
   can_access_battery = true;

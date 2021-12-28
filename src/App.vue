@@ -23,6 +23,9 @@ window.lightdm?.show_prompt.connect((_text: string, type: number) => {
     window.lightdm?.respond(store.password);
   }
 });
+window.lightdm?.show_message.connect((text: string, type: number) => {
+  console.log({ text, type });
+});
 window.lightdm?.authentication_complete.connect(() => {
   if (!window.lightdm?.is_authenticated) {
     window.lightdm?.cancel_authentication();

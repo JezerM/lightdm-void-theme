@@ -20,7 +20,7 @@
           v-model="store.password"
         />
         <button id="submit-button" type="submit" :disabled="store.validating">
-          S
+          <SvgIcon type="mdi" :path="submit_icon" />
         </button>
       </div>
     </form>
@@ -32,12 +32,18 @@ import { Vue, Options } from "vue-class-component";
 import "nody-greeter-types";
 import { settings } from "@/settings";
 import { store } from "@/store";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiMenuRight } from "@mdi/js";
 
 @Options({
+  components: {
+    SvgIcon,
+  },
   data() {
     return {
       store,
       current_user: settings.user,
+      submit_icon: mdiMenuRight,
     };
   },
   methods: {
@@ -70,11 +76,12 @@ form {
 }
 #submit-button {
   flex-grow: 0;
+  display: flex;
 }
 
 input {
   background-color: transparent;
-  padding: 1em;
+  padding: 0.8em;
   color: #d3c6aa;
   outline: 0;
   border-width: 2px;
@@ -93,7 +100,7 @@ input {
 }
 button {
   background-color: transparent;
-  padding: 1em;
+  padding: 0.8em;
   color: #d3c6aa;
   outline: 0;
   border-width: 2px;

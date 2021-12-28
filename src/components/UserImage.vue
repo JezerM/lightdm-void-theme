@@ -54,6 +54,10 @@ export default class UserImage extends Vue {}
   #initials {
     font-size: 2em;
     font-weight: bold;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 #user-image {

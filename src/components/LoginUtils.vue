@@ -38,6 +38,12 @@ export default class LoginUtils extends Vue {}
   flex-direction: row;
   align-items: center;
   gap: 0.3em;
+  max-width: 50%;
+}
+#sessions-button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 button {
   background-color: transparent;

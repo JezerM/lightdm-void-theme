@@ -1,7 +1,10 @@
 <template>
   <div id="home">
     <Addons />
-    <DateTime />
+    <div id="header-container">
+      <DateTime />
+      <h3 id="lock-message" v-if="locked">Your session is locked</h3>
+    </div>
     <Card
       id="login-card"
       :class="{
@@ -22,7 +25,7 @@
     </Card>
 
     <button id="settings-button" @click="$router.push('/config')">
-      Config
+      <SvgIcon type="mdi" :path="config_icon" />
     </button>
   </div>
 </template>
@@ -38,6 +41,8 @@ import Power from "@/components/Power.vue";
 import Addons from "@/components/Addons.vue";
 import UserImage from "@/components/UserImage.vue";
 import { store } from "@/store";
+import { mdiCog } from "@mdi/js";
+import SvgIcon from "@jamescoyle/vue-icon";
 
 @Options({
   components: {
@@ -49,9 +54,14 @@ import { store } from "@/store";
     Power,
     UserImage,
     Addons,
+    SvgIcon,
   },
   data() {
-    return { store };
+    return {
+      store,
+      config_icon: mdiCog,
+      locked: window.lightdm?.lock_hint,
+    };
   },
 })
 export default class Home extends Vue {}
@@ -87,6 +97,11 @@ export default class Home extends Vue {}
   }
 }
 
+#header-container {
+  display: flex;
+  flex-direction: column;
+}
+
 #login-header {
   display: flex;
   flex-direction: row;
@@ -109,6 +124,7 @@ export default class Home extends Vue {}
 
 #settings-button {
   position: fixed;
+  display: flex;
   bottom: 0;
   left: 0;
   margin: 1.1rem;
