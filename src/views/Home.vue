@@ -32,7 +32,6 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue";
 import Card from "@/components/Card.vue";
 import DateTime from "@/components/DateTime.vue";
 import LoginForm from "@/components/LoginForm.vue";
@@ -46,7 +45,6 @@ import SvgIcon from "@jamescoyle/vue-icon";
 
 @Options({
   components: {
-    HelloWorld,
     Card,
     DateTime,
     LoginForm,
