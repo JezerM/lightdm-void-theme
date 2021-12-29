@@ -37,7 +37,7 @@ window.lightdm?.authentication_complete.connect(() => {
   } else {
     store.authenticated = 1; // Authenticated
     setTimeout(() => {
-      window.lightdm?.start_session(settings.desktop?.name ?? null);
+      window.lightdm?.start_session(settings.desktop?.key ?? null);
     }, 2000);
   }
   store.validating = false;
