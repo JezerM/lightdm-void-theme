@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { LightDMSession, LightDMUser } from "nody-greeter-types";
+import { LightDMSession, LightDMUser, LightDMLayout } from "nody-greeter-types";
 import def_image from "@/assets/everforest_stairs.jpg";
 let sett: string | null = localStorage.getItem("void-settings");
 
@@ -10,6 +10,7 @@ interface settings_t {
   background: string;
   user: LightDMUser | undefined;
   desktop: LightDMSession | undefined;
+  layout: LightDMLayout | undefined;
 }
 
 const settings_object: settings_t = sett
@@ -19,6 +20,7 @@ const settings_object: settings_t = sett
       background: def_image,
       user: window.lightdm?.users[0],
       desktop: window.lightdm?.sessions[0],
+      layout: window.lightdm?.layout,
     } as settings_t);
 
 export const settings = reactive(settings_object);
@@ -27,6 +29,8 @@ if (!settings.user) settings.user = window.lightdm?.users.find((u) => !!u);
 
 if (!settings.desktop)
   settings.desktop = window.lightdm?.sessions.find((s) => !!s);
+
+if (!settings.layout) settings.layout = window.lightdm?.layout;
 
 window.lightdm?.users.forEach((u) => {
   if (u.username === settings.user?.username) settings.user = u;

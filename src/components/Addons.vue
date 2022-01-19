@@ -99,7 +99,6 @@ import {
       if (window.lightdm?.can_access_battery) {
         this.battery = window.lightdm.batteryData;
         this.battery_level = this.battery.level;
-        console.log(this.battery_level);
         this.battery_icon = this.update_battery_icon();
       }
     },
@@ -110,7 +109,6 @@ import {
     },
   },
   mounted() {
-    console.log(mdiBattery10);
     this.update_battery();
     this.update_brightness();
     window.lightdm?.battery_update.connect(this.update_battery);

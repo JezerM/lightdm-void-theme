@@ -25,8 +25,11 @@ import { settings } from "@/settings";
   data() {
     return {
       current_session: settings.desktop,
-      current_layout: window.lightdm?.layout,
+      current_layout: settings.layout,
     };
+  },
+  mounted() {
+    /*if (window.lightdm) window.lightdm.layout = this.current_layout;*/
   },
 })
 export default class LoginUtils extends Vue {}

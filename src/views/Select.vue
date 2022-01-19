@@ -61,7 +61,7 @@ function isLayout(object: unknown): object is LightDMLayout {
       selected = settings.desktop;
     } else if (mode == "layout") {
       content = window.greeter_config?.layouts ?? [];
-      selected = window.lightdm?.layout;
+      selected = settings.layout;
     } else content = [];
 
     return {
@@ -78,7 +78,10 @@ function isLayout(object: unknown): object is LightDMLayout {
       } else if (this.mode == "desktop" && isSession(item)) {
         settings.desktop = item;
       } else if (this.mode == "layout" && isLayout(item)) {
-        if (window.lightdm) window.lightdm.layout = { ...item };
+        if (window.lightdm) {
+          window.lightdm.layout = { ...item };
+          settings.layout = { ...item };
+        }
       }
       this.selected = item;
       save_settings();
