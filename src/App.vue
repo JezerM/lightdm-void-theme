@@ -33,6 +33,9 @@ window.lightdm?.authentication_complete.connect(() => {
     store.authenticated = 2; // Not authenticated
     setTimeout(() => {
       store.authenticated = 0;
+      let pass: HTMLInputElement | null =
+        document.querySelector("#password-input");
+      pass?.focus();
     }, 2000);
   } else {
     store.authenticated = 1; // Authenticated
