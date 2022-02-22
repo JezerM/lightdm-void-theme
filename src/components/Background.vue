@@ -3,7 +3,7 @@
     :class="{ background: full_background }"
     :style="{
       'background-color': background_color,
-      'background-image': 'url(' + settings.background + ')',
+      'background-image': 'url(\'' + settings.background + '\')',
     }"
   ></div>
 </template>
