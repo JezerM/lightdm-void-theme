@@ -204,10 +204,11 @@ class Greeter implements GreeterClass {
     if (username == null) {
       this.show_prompt._emit("login:", 0);
     }
+    return true;
   }
 
   authenticate_as_guest() {
-    return;
+    return false;
   }
 
   brightnessSet(quantity: number) {
@@ -219,13 +220,23 @@ class Greeter implements GreeterClass {
   brightnessDecrease(quantity: number) {
     this.brightness -= quantity;
   }
+  brightness_set(quantity: number) {
+    this.brightness = quantity;
+  }
+  brightness_increase(quantity: number) {
+    this.brightness += quantity;
+  }
+  brightness_decrease(quantity: number) {
+    this.brightness -= quantity;
+  }
 
   cancel_authentication() {
     this.authentication_user = null;
     this.in_authentication = false;
+    return true;
   }
   cancel_autologin() {
-    return;
+    return true;
   }
 
   hibernate() {
@@ -241,7 +252,7 @@ class Greeter implements GreeterClass {
     return true;
   }
   respond(response: string) {
-    if (!this.in_authentication) return;
+    if (!this.in_authentication) return false;
     if (this.authentication_user == null) {
       this.authentication_user = response;
       this.show_prompt._emit("Password: ", 1);
@@ -258,6 +269,7 @@ class Greeter implements GreeterClass {
         }, 3000);
       }
     }
+    return true;
   }
 
   set_language(language: string): boolean {
