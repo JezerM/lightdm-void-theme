@@ -3,7 +3,7 @@
     :class="{ background: full_background }"
     :style="{
       'background-color': background_color,
-      'background-image': 'url(\'' + settings.background + '\')',
+      'background-image': 'url(\'' + background + '\')',
     }"
   ></div>
 </template>
@@ -16,15 +16,32 @@ import { settings } from "@/settings";
   data() {
     return {
       settings,
-      background: "",
+      background: settings.background,
       background_color: "#2b3339",
     };
+  },
+  methods: {
+    update_background() {
+      if (settings.background == "user_image" && settings.user?.background) {
+        this.background = settings.user.background;
+      } else {
+        this.background = settings.background;
+      }
+    },
+  },
+  watch: {
+    "settings.background"() {
+      this.update_background();
+    },
   },
   props: {
     full_background: {
       type: Boolean,
       default: true,
     },
+  },
+  mounted() {
+    this.update_background();
   },
 })
 export default class Background extends Vue {}

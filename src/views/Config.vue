@@ -6,7 +6,7 @@
     </div>
     <div id="image-buttons">
       <button id="left-button" @click="left()">Previous</button>
-      <span id="image-name">{{ current_image }}</span>
+      <span id="image-name">{{ current_image_name }}</span>
       <button id="right-button" @click="right()">Next</button>
     </div>
   </div>
@@ -25,6 +25,7 @@ import { settings, save_settings } from "@/settings";
       backgrounds: [],
       position: 0,
       current_image: settings.background,
+      current_image_name: settings.background,
     };
   },
   async mounted() {
@@ -38,8 +39,14 @@ import { settings, save_settings } from "@/settings";
   },
   watch: {
     position() {
-      this.current_image = this.backgrounds[this.position];
-      settings.background = this.current_image;
+      let current = this.backgrounds[this.position];
+      settings.background = current;
+      this.current_image_name = current;
+      if (current == "user_image" && settings.user?.background) {
+        this.current_image = settings.user.background;
+      } else {
+        this.current_image = current;
+      }
       save_settings();
     },
   },
