@@ -45,6 +45,9 @@ window.nody_greeter?.whenReady().then(() => {
     "settings.background"() {
       this.update_background();
     },
+    "settings.user"() {
+      this.update_background();
+    },
   },
   props: {
     full_background: {
