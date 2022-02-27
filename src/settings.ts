@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
 import { LightDMSession, LightDMUser, LightDMLayout } from "nody-greeter-types";
 import def_image from "@/assets/everforest_stairs.jpg";
 let sett: string | null = localStorage.getItem("void-settings");
@@ -24,6 +24,17 @@ const settings_object: settings_t = sett
     } as settings_t);
 
 export const settings = reactive(settings_object);
+
+watch(
+  () => settings.background,
+  (value, oldValue) => {
+    if (value == oldValue) return;
+    window.nody_greeter?.broadcast({
+      type: "change-background",
+      path: value,
+    });
+  }
+);
 
 if (!settings.user) settings.user = window.lightdm?.users.find((u) => !!u);
 

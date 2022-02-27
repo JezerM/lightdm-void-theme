@@ -12,6 +12,18 @@
 import { Vue, Options } from "vue-class-component";
 import { settings } from "@/settings";
 
+window.nody_greeter?.whenReady().then(() => {
+  window.addEventListener("NodyBroadcastEvent", (ev: unknown) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (ev.data.type == "change-background") {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      settings.background = ev.data.path;
+    }
+  });
+});
+
 @Options({
   data() {
     return {
