@@ -11,20 +11,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/select/:mode",
     name: "Select",
-    component: () =>
-      import(/* webpackChunkName: "select" */ "../views/Select.vue"),
+    component: () => import("../views/Select.vue"),
   },
   {
     path: "/splash/:mode",
     name: "Splash",
-    component: () =>
-      import(/* webpackChunkName: "splash" */ "../views/Splash.vue"),
+    component: () => import("../views/Splash.vue"),
   },
   {
     path: "/config",
     name: "Config",
-    component: () =>
-      import(/* webpackChunkName: "config" */ "../views/Config.vue"),
+    component: () => import("../views/Config.vue"),
   },
 ];
 
