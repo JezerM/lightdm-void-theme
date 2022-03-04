@@ -4,6 +4,12 @@ I tried Void Linux and got super excited to create a lightdm theme inspired in V
 
 Additionally, this is inspired on Litarvan's theme visuals and structure.
 
+## Screenshots
+
+<center>
+<img src="misc/theme-show-1.png" alt="Void Theme"/>
+</center>
+
 ## Dependencies
 
 - [web-greeter][web-greeter] or [nody-greeter][nody-greeter]
