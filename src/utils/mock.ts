@@ -3,6 +3,8 @@ import {
   Greeter as GreeterClass,
   GreeterConfig as GreeterConfigClass,
   ThemeUtils as ThemeUtilsClass,
+  MessageSignal as MessageSignalClass,
+  MessageSignal as PromptSignalClass,
 } from "nody-greeter-types";
 
 class LightDMLanguage {
@@ -66,20 +68,20 @@ class LightDMSession {
 
 class Signal implements SignalClass {
   _name: string;
-  _callbacks: Function[] = []; // eslint-disable-line
+  _callbacks: ((...args: unknown[]) => void)[] = []; // eslint-disable-line
 
   constructor(name: string) {
     this._name = name;
   }
 
   // eslint-disable-next-line
-  connect(callback: Function): void {
+  connect(callback: (...args: any[]) => void): void {
     if (typeof callback !== "function") return;
     this._callbacks.push(callback);
   }
 
   // eslint-disable-next-line
-  disconnect(callback: Function): void {
+  disconnect(callback: (...args: any[]) => void): void {
     const ind = this._callbacks.findIndex((cb) => {
       return cb === callback;
     });
@@ -87,12 +89,22 @@ class Signal implements SignalClass {
     this._callbacks.splice(ind, 1);
   }
 
-  // eslint-disable-next-line
-  _emit(...args: [...any]) {
+  _emit(...args: unknown[]) {
     this._callbacks.forEach((cb) => {
       if (typeof cb !== "function") return;
       cb(...args);
     });
+  }
+}
+
+class MessageSignal extends Signal implements MessageSignalClass {
+  connect(callback: (message: string, type: number) => void) {
+    super.connect(callback);
+  }
+}
+class PromptSignal extends Signal implements PromptSignalClass {
+  connect(callback: (message: string, type: number) => void) {
+    super.connect(callback);
   }
 }
 
@@ -103,8 +115,8 @@ class Greeter implements GreeterClass {
   autologin_timer_expired = new Signal("autologin_timer_expired");
   idle = new Signal("idle");
   reset = new Signal("reset");
-  show_message = new Signal("show_message");
-  show_prompt = new Signal("show_prompt");
+  show_message = new MessageSignal("show_message");
+  show_prompt = new PromptSignal("show_prompt");
   brightness_update = new Signal("show_message");
   battery_update = new Signal("battery_update");
 
@@ -112,7 +124,7 @@ class Greeter implements GreeterClass {
   autologin_guest = false;
   autologin_timeout = 0;
   autologin_user = "";
-  batteryData = {
+  battery_data = {
     name: "BAT0",
     level: 85,
     status: "Discharging",
@@ -121,6 +133,9 @@ class Greeter implements GreeterClass {
     capacity: 100,
     watt: 0,
   };
+  get batteryData() {
+    return this.battery_data;
+  }
   private _brightness = 50;
   get brightness(): number {
     return this._brightness;
@@ -375,7 +390,7 @@ class ThemeUtils implements ThemeUtilsClass {
     }
   }
   // eslint-disable-next-line
-  dirlist_sync(path: string, images_only = true): string[] {
+  dirlist_sync(path: string, only_images = true): string[] {
     return [];
   }
 

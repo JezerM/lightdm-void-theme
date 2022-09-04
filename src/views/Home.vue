@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import Card from "@/components/Card.vue";
 import DateTime from "@/components/DateTime.vue";
 import LoginForm from "@/components/LoginForm.vue";
@@ -43,7 +43,7 @@ import { store } from "@/store";
 import { mdiCog } from "@mdi/js";
 import SvgIcon from "@jamescoyle/vue-icon";
 
-@Options({
+export default defineComponent({
   components: {
     Card,
     DateTime,
@@ -61,8 +61,7 @@ import SvgIcon from "@jamescoyle/vue-icon";
       locked: window.lightdm?.lock_hint,
     };
   },
-})
-export default class Home extends Vue {}
+});
 </script>
 
 <style lang="less">

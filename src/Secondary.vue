@@ -5,19 +5,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
-import Background from "@/components/Background.vue";
+import { defineComponent } from "vue";
 import { store } from "@/store";
+import Background from "@/components/Background.vue";
 
-@Options({
+export default defineComponent({
   components: {
     Background,
   },
   data() {
     return { store };
   },
-})
-export default class App extends Vue {}
+});
 </script>
 
 <style lang="less">

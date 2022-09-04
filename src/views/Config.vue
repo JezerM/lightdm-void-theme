@@ -13,23 +13,21 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
-import Background from "@/components/Background.vue";
+import { defineComponent } from "vue";
 import { get_backgrounds } from "@/utils/backgrounds";
 import { settings, save_settings } from "@/settings";
 
-@Options({
-  components: { Background },
+export default defineComponent({
   data() {
     return {
-      backgrounds: [],
+      backgrounds: [] as string[],
       position: 0,
       current_image: settings.background,
       current_image_name: settings.background,
     };
   },
   async mounted() {
-    const images = await get_backgrounds();
+    const images: string[] = await get_backgrounds();
     let index = 0;
     images.forEach((img, ind) => {
       if (img == settings.background) index = ind;
@@ -60,8 +58,7 @@ import { settings, save_settings } from "@/settings";
       else this.position++;
     },
   },
-})
-export default class Config extends Vue {}
+});
 </script>
 
 <style lang="less">

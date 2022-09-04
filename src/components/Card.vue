@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 
-@Options({
+export default defineComponent({
   data() {
     return {};
   },
@@ -21,8 +21,7 @@ import { Vue, Options } from "vue-class-component";
     radius: String,
     bg_color: String,
   },
-})
-export default class Card extends Vue {}
+});
 </script>
 
 <style lang="less">

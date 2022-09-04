@@ -1,4 +1,3 @@
-import { theme_utils, greeter_config } from "nody-greeter-types";
 import { settings } from "@/settings";
 import def_image from "@/assets/everforest_stairs.jpg";
 
@@ -6,8 +5,9 @@ export async function get_backgrounds(): Promise<string[]> {
   const images: string[] = [];
   images.push(def_image, "user_image");
   await new Promise((resolve) => {
-    theme_utils.dirlist(
-      greeter_config.branding.background_images_dir,
+    window.theme_utils?.dirlist(
+      window.greeter_config?.branding.background_images_dir ??
+        "/usr/share/backgrounds",
       true,
       (files) => {
         images.push(...files);

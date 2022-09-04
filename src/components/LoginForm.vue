@@ -6,7 +6,7 @@
         @click="$router.push('/select/user')"
         :disabled="store.validating"
       >
-        {{ current_user.display_name }}
+        {{ current_user?.display_name ?? current_user?.username }}
       </button>
       <div id="password-section">
         <input
@@ -28,14 +28,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 import "nody-greeter-types";
 import { settings } from "@/settings";
 import { store } from "@/store";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiMenuRight } from "@mdi/js";
 
-@Options({
+export default defineComponent({
   components: {
     SvgIcon,
   },
@@ -51,8 +51,7 @@ import { mdiMenuRight } from "@mdi/js";
       window.lightdm?.authenticate(null);
     },
   },
-})
-export default class LoginForm extends Vue {}
+});
 </script>
 
 <style lang="less" scoped>

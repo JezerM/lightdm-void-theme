@@ -2,8 +2,8 @@
   <div id="user-image-container" :style="{ 'background-color': image_color }">
     <img
       id="user-image"
-      :src="current_user.image"
-      :alt="current_user.username"
+      :src="current_user?.image"
+      :alt="current_user?.username"
       @error="no_image = true"
       v-if="!no_image"
     />
@@ -12,11 +12,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 import { settings } from "@/settings";
 import { get_color_from_string } from "@/utils/color";
 
-@Options({
+export default defineComponent({
   data() {
     return {
       no_image: false,
@@ -26,7 +26,8 @@ import { get_color_from_string } from "@/utils/color";
   },
   computed: {
     initials() {
-      const display_name = this.current_user.display_name;
+      const display_name =
+        this.current_user?.display_name ?? this.current_user?.username ?? "";
       const splitted = display_name.split(" ");
       let initials = "";
       for (let i = 0; i < splitted.length; i++) {
@@ -35,8 +36,7 @@ import { get_color_from_string } from "@/utils/color";
       return initials;
     },
   },
-})
-export default class UserImage extends Vue {}
+});
 </script>
 
 <style lang="less">

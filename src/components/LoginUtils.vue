@@ -5,23 +5,23 @@
       type="button"
       @click="$router.push('/select/desktop')"
     >
-      {{ current_session.name }}
+      {{ current_session?.name }}
     </button>
     <button
       id="layouts-button"
       type="button"
       @click="$router.push('/select/layout')"
     >
-      {{ current_layout.name }}
+      {{ current_layout?.name }}
     </button>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 import { settings } from "@/settings";
 
-@Options({
+export default defineComponent({
   data() {
     return {
       current_session: settings.desktop,
@@ -31,8 +31,7 @@ import { settings } from "@/settings";
   mounted() {
     /*if (window.lightdm) window.lightdm.layout = this.current_layout;*/
   },
-})
-export default class LoginUtils extends Vue {}
+});
 </script>
 
 <style lang="less">

@@ -9,22 +9,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
-import { settings } from "@/settings";
+import { defineComponent } from "vue";
+import { settings, BackgroundData } from "@/settings";
 
-window.nody_greeter?.whenReady().then(() => {
-  window.addEventListener("NodyBroadcastEvent", (ev: unknown) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (ev.data.type == "change-background") {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      settings.background = ev.data.path;
+window.greeter_comm?.whenReady().then(() => {
+  window.addEventListener("GreeterBroadcastEvent", (ev) => {
+    const data = ev.data as BackgroundData;
+    if (data.type == "change-background") {
+      settings.background = data.path;
     }
   });
 });
 
-@Options({
+export default defineComponent({
   data() {
     return {
       settings,
@@ -58,8 +55,7 @@ window.nody_greeter?.whenReady().then(() => {
   mounted() {
     this.update_background();
   },
-})
-export default class Background extends Vue {}
+});
 </script>
 
 <style lang="less" scoped>

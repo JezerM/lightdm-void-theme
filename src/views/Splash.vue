@@ -8,9 +8,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 
-@Options({
+export default defineComponent({
   data() {
     const mode = this.$route.params.mode;
     if (typeof mode !== "string") return {};
@@ -42,8 +42,7 @@ import { Vue, Options } from "vue-class-component";
   unmounted() {
     window.removeEventListener("keyup", this.back);
   },
-})
-export default class Splash extends Vue {}
+});
 </script>
 
 <style lang="less">

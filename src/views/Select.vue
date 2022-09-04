@@ -4,10 +4,10 @@
     <transition-group id="content" name="list" tag="div">
       <SelectItem
         v-for="item of content"
-        :key="item[type.key]"
+        :key="getKey(item)"
         :mode="mode"
         :item="item"
-        :selected="item[type.key] === selected[type.key]"
+        :selected="getKey(item) === getKey(selected)"
         @select="select(item)"
       />
     </transition-group>
@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { settings, save_settings } from "../settings";
-import SelectItem from "@/components/SelectItem.vue";
 import { LightDMUser, LightDMSession, LightDMLayout } from "nody-greeter-types";
+import SelectItem from "@/components/SelectItem.vue";
 
 interface mode_t {
   field: string;
@@ -32,26 +32,31 @@ const modes = {
   layout: { field: "layouts", name: "name", key: "name" } as mode_t,
 };
 
-function isUser(object: unknown): object is LightDMUser {
-  return Object.prototype.hasOwnProperty.call(object, "display_name");
-}
-function isSession(object: unknown): object is LightDMSession {
-  return Object.prototype.hasOwnProperty.call(object, "comment");
-}
-function isLayout(object: unknown): object is LightDMLayout {
-  return Object.prototype.hasOwnProperty.call(object, "short_description");
+interface Data {
+  mode: "user" | "desktop" | "layout";
+  type: mode_t;
+  content: LightDMUser[] | LightDMSession[] | LightDMLayout[];
+  selected: LightDMUser | LightDMSession | LightDMLayout | undefined;
 }
 
-@Options({
+const undefinedData: Data = {
+  mode: "user",
+  type: modes.user,
+  content: [],
+  selected: undefined,
+};
+
+export default defineComponent({
   components: { SelectItem },
-  data() {
+  data(): Data {
     const mode = this.$route.params.mode;
-    if (typeof mode !== "string") return {};
-    if (mode != "user" && mode != "desktop" && mode != "layout") return {};
+    if (typeof mode !== "string") return undefinedData;
+    if (mode != "user" && mode != "desktop" && mode != "layout")
+      return undefinedData;
     const type: mode_t = modes[mode];
 
-    let content: LightDMUser[] | LightDMSession[] | LightDMLayout[] | unknown[];
-    let selected: LightDMUser | LightDMSession | LightDMLayout | unknown;
+    let content: LightDMUser[] | LightDMSession[] | LightDMLayout[];
+    let selected: LightDMUser | LightDMSession | LightDMLayout | undefined;
 
     if (mode == "user") {
       content = window.lightdm?.users ?? [];
@@ -72,12 +77,12 @@ function isLayout(object: unknown): object is LightDMLayout {
     };
   },
   methods: {
-    select(item: LightDMUser | LightDMSession) {
-      if (this.mode == "user" && isUser(item)) {
+    select(item: LightDMUser | LightDMSession | LightDMLayout) {
+      if (this.mode == "user" && this.isUser(item)) {
         settings.user = item;
-      } else if (this.mode == "desktop" && isSession(item)) {
+      } else if (this.mode == "desktop" && this.isSession(item)) {
         settings.desktop = item;
-      } else if (this.mode == "layout" && isLayout(item)) {
+      } else if (this.mode == "layout" && this.isLayout(item)) {
         if (window.lightdm) {
           window.lightdm.layout = { ...item };
           settings.layout = { ...item };
@@ -89,6 +94,27 @@ function isLayout(object: unknown): object is LightDMLayout {
     escape(event: KeyboardEvent) {
       if (event.code === "Escape") this.$router.back();
     },
+    isUser(object: unknown): object is LightDMUser {
+      return Object.prototype.hasOwnProperty.call(object, "display_name");
+    },
+    isSession(object: unknown): object is LightDMSession {
+      return Object.prototype.hasOwnProperty.call(object, "comment");
+    },
+    isLayout(object: unknown): object is LightDMLayout {
+      return Object.prototype.hasOwnProperty.call(object, "short_description");
+    },
+    getKey(
+      item: LightDMUser | LightDMSession | LightDMLayout | undefined
+    ): string {
+      if (this.isUser(item)) {
+        return item.username;
+      } else if (this.isSession(item)) {
+        return item.key;
+      } else if (this.isLayout(item)) {
+        return item.name;
+      }
+      return "undefined";
+    },
   },
   mounted() {
     window.addEventListener("keyup", this.escape);
@@ -96,8 +122,7 @@ function isLayout(object: unknown): object is LightDMLayout {
   unmounted() {
     window.removeEventListener("keyup", this.escape);
   },
-})
-export default class Select extends Vue {}
+});
 </script>
 
 <style lang="less">

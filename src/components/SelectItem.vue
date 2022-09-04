@@ -1,22 +1,28 @@
 <template>
   <button class="item" :class="{ selected: selected }" @click="select()">
-    {{ mode === "user" ? item.display_name : item.name }}
-    <span v-if="mode === 'user'">: {{ item.username }}</span>
-    <span v-if="mode === 'desktop'">: {{ item.key }}</span>
-    <span v-if="mode === 'layout'">: {{ item.description }}</span>
+    {{ fullItem.name }}
+    <span>: {{ fullItem.description }}</span>
   </button>
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 import { PropType } from "vue";
-import { LightDMUser, LightDMSession } from "nody-greeter-types";
+import { LightDMUser, LightDMSession, LightDMLayout } from "nody-greeter-types";
 
-@Options({
+interface Item {
+  name: string;
+  description: string;
+}
+
+export default defineComponent({
   props: {
-    mode: String,
+    mode: {
+      type: String as PropType<"user" | "desktop" | "layout">,
+      required: true,
+    },
     item: {
-      type: Object as PropType<LightDMUser | LightDMSession>,
+      type: Object as PropType<LightDMUser | LightDMSession | LightDMLayout>,
       required: true,
     },
     selected: {
@@ -25,13 +31,37 @@ import { LightDMUser, LightDMSession } from "nody-greeter-types";
       default: false,
     },
   },
+  computed: {
+    fullItem(): Item {
+      let name = "";
+      let desc = "";
+
+      switch (this.mode) {
+        case "user":
+          name = (this.item as LightDMUser).display_name;
+          desc = (this.item as LightDMUser).username;
+          break;
+        case "desktop":
+          name = (this.item as LightDMSession).name;
+          desc = (this.item as LightDMSession).key;
+          break;
+        case "layout":
+          name = (this.item as LightDMLayout).name;
+          desc = (this.item as LightDMLayout).description;
+          break;
+      }
+      return {
+        name: name,
+        description: desc,
+      };
+    },
+  },
   methods: {
     select() {
       this.$emit("select");
     },
   },
-})
-export default class SelectItem extends Vue {}
+});
 </script>
 
 <style lang="less">

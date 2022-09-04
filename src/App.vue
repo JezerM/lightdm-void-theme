@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
-import Background from "@/components/Background.vue";
+import { defineComponent } from "vue";
 import { settings } from "@/settings";
 import { store } from "@/store";
+import Background from "@/components/Background.vue";
 
 window.lightdm?.show_prompt.connect((_text: string, type: number) => {
   if (type == 0) {
@@ -46,7 +46,7 @@ window.lightdm?.authentication_complete.connect(() => {
   store.validating = false;
 });
 
-@Options({
+export default defineComponent({
   components: {
     Background,
   },
@@ -56,8 +56,7 @@ window.lightdm?.authentication_complete.connect(() => {
   mounted() {
     this.$router.push("/home");
   },
-})
-export default class App extends Vue {}
+});
 </script>
 
 <style lang="less">

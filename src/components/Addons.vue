@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import {
   mdiBatteryOutline,
@@ -42,13 +42,13 @@ import {
   mdiBrightness7,
 } from "@mdi/js";
 
-@Options({
+export default defineComponent({
   components: {
     SvgIcon,
   },
   data() {
     return {
-      battery: {},
+      battery: window.lightdm?.battery_data,
       battery_level: 0,
       brightness: 0,
       battery_icon: "",
@@ -68,7 +68,8 @@ import {
     },
   },
   methods: {
-    update_battery_icon() {
+    update_battery_icon(): string {
+      if (!this.battery) return mdiBattery;
       if (this.battery.level < 5) {
         return this.battery.ac_status
           ? mdiBatteryChargingOutline
@@ -97,7 +98,7 @@ import {
     },
     update_battery() {
       if (window.lightdm?.can_access_battery) {
-        this.battery = window.lightdm.batteryData;
+        this.battery = window.lightdm.battery_data;
         this.battery_level = this.battery.level;
         this.battery_icon = this.update_battery_icon();
       }
@@ -118,8 +119,7 @@ import {
     window.lightdm?.battery_update.disconnect(this.update_battery);
     window.lightdm?.brightness_update.disconnect(this.update_brightness);
   },
-})
-export default class Addons extends Vue {}
+});
 </script>
 
 <style lang="less">

@@ -1,6 +1,7 @@
 import { reactive, watch } from "vue";
 import { LightDMSession, LightDMUser, LightDMLayout } from "nody-greeter-types";
 import def_image from "@/assets/everforest_stairs.jpg";
+
 let sett: string | null = localStorage.getItem("void-settings");
 
 if (sett === "undefined") sett = null;
@@ -25,14 +26,20 @@ const settings_object: settings_t = sett
 
 export const settings = reactive(settings_object);
 
+export interface BackgroundData {
+  type: string;
+  path: string;
+}
+
 watch(
   () => settings.background,
   (value, oldValue) => {
     if (value == oldValue) return;
-    window.nody_greeter?.broadcast({
+    const data: BackgroundData = {
       type: "change-background",
       path: value,
-    });
+    };
+    window.greeter_comm?.broadcast(data);
   }
 );
 

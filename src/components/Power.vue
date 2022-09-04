@@ -36,11 +36,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
-import SvgIcon from "@jamescoyle/vue-icon";
+import { defineComponent } from "vue";
 import { mdiPower, mdiRestart, mdiPowerSleep, mdiPowerCycle } from "@mdi/js";
+import SvgIcon from "@jamescoyle/vue-icon";
 
-@Options({
+export default defineComponent({
   components: {
     SvgIcon,
   },
@@ -74,8 +74,7 @@ import { mdiPower, mdiRestart, mdiPowerSleep, mdiPowerCycle } from "@mdi/js";
       window.lightdm?.hibernate();
     },
   },
-})
-export default class Power extends Vue {}
+});
 </script>
 
 <style lang="less">

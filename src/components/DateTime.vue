@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 import "nody-greeter-types";
 
-@Options({
+export default defineComponent({
   data() {
     return {
       time: "00:00",
@@ -24,12 +24,11 @@ import "nody-greeter-types";
   },
   methods: {
     update() {
-      this.time = window.theme_utils?.get_current_localized_time();
-      this.date = window.theme_utils?.get_current_localized_date();
+      this.time = window.theme_utils?.get_current_localized_time() ?? "00:00";
+      this.date = window.theme_utils?.get_current_localized_date() ?? "";
     },
   },
-})
-export default class DateTime extends Vue {}
+});
 </script>
 
 <style lang="less">
