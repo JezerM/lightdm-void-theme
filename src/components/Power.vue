@@ -93,9 +93,9 @@ button {
   padding: 0.5em;
   color: #d3c6aa;
   outline: 0;
-  border-width: 2px;
+  border-width: 0.15em;
   border-style: solid;
-  border-radius: 5px;
+  border-radius: 0.25em;
   transition: all ease-in-out 0.25s;
   border-color: #5c6a72;
   cursor: pointer;

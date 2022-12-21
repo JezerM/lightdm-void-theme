@@ -154,8 +154,8 @@ export default defineComponent({
   background-color: #465458bb;
   color: #d3c6aa;
   outline: 0;
-  border-radius: 5px;
-  border-width: 2px;
+  border-radius: 0.25em;
+  border-width: 0.15em;
   border-color: #4a555b;
   border-style: solid;
   cursor: pointer;

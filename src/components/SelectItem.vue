@@ -72,8 +72,8 @@ export default defineComponent({
   color: #d3c6aa;
   outline: 0;
   padding: 0.5em;
-  border-radius: 5px;
-  border-width: 2px;
+  border-radius: 0.25em;
+  border-width: 0.15em;
   border-color: #4a555b;
   border-style: solid;
   cursor: pointer;

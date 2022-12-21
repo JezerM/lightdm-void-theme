@@ -11,7 +11,7 @@
         success: store.authenticated == 1,
         failure: store.authenticated == 2,
       }"
-      radius="5px"
+      radius="0.5em"
     >
       <div id="login-header">
         <UserImage />
@@ -105,14 +105,14 @@ export default defineComponent({
   justify-content: space-between;
   border-bottom-color: #5c6a72;
   border-bottom-style: inset;
-  border-bottom-width: 2px;
-  padding-bottom: 10px;
+  border-bottom-width: 0.15em;
+  padding-bottom: 1em;
 }
 #login-footer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: 1em;
 }
 
 #LoginForm {
@@ -133,9 +133,9 @@ export default defineComponent({
   background-color: #465258bb;
   color: #d3c6aa;
   outline: 0;
-  border-width: 2px;
+  border-width: 0.15em;
   border-style: solid;
-  border-radius: 5px;
+  border-radius: 0.25em;
   transition: all ease-in-out 0.25s;
   border-color: #5c6a72;
   cursor: pointer;

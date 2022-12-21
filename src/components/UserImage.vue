@@ -45,7 +45,7 @@ export default defineComponent({
   border-radius: 100%;
   border-color: #d3c6aa;
   border-style: solid;
-  border-width: 4px;
+  border-width: 0.25em;
   height: 8rem;
   display: flex;
   align-items: center;
