@@ -66,7 +66,13 @@ class LightDMSession {
   }
 }
 
-class Signal implements SignalClass {
+type PublicPart<T> = Pick<T, keyof T>;
+
+function signalToSignal(signal: SignalClass): Signal {
+  return signal as unknown as Signal;
+}
+
+class Signal implements PublicPart<SignalClass> {
   _name: string;
   _callbacks: ((...args: unknown[]) => void)[] = []; // eslint-disable-line
 
@@ -97,28 +103,32 @@ class Signal implements SignalClass {
   }
 }
 
-class MessageSignal extends Signal implements MessageSignalClass {
+class MessageSignal extends Signal implements PublicPart<MessageSignalClass> {
   connect(callback: (message: string, type: number) => void) {
     super.connect(callback);
   }
 }
-class PromptSignal extends Signal implements PromptSignalClass {
+class PromptSignal extends Signal implements PublicPart<PromptSignalClass> {
   connect(callback: (message: string, type: number) => void) {
     super.connect(callback);
   }
+}
+
+function mock(instance: Signal): SignalClass {
+  return instance as unknown as SignalClass;
 }
 
 class Greeter implements GreeterClass {
   mock_password = "mock";
 
-  authentication_complete = new Signal("authentication_complete");
-  autologin_timer_expired = new Signal("autologin_timer_expired");
-  idle = new Signal("idle");
-  reset = new Signal("reset");
-  show_message = new MessageSignal("show_message");
-  show_prompt = new PromptSignal("show_prompt");
-  brightness_update = new Signal("show_message");
-  battery_update = new Signal("battery_update");
+  authentication_complete = mock(new Signal("authentication_complete"));
+  autologin_timer_expired = mock(new Signal("autologin_timer_expired"));
+  idle = mock(new Signal("idle"));
+  reset = mock(new Signal("reset"));
+  show_message = mock(new MessageSignal("show_message"));
+  show_prompt = mock(new PromptSignal("show_prompt"));
+  brightness_update = mock(new Signal("show_message"));
+  battery_update = mock(new Signal("battery_update"));
 
   authentication_user: string | null = null;
   autologin_guest = false;
@@ -144,7 +154,7 @@ class Greeter implements GreeterClass {
     if (quantity < 0) quantity = 0;
     else if (quantity > 100) quantity = 100;
     this._brightness = quantity;
-    this.brightness_update._emit();
+    signalToSignal(this.brightness_update)._emit();
   }
 
   can_access_battery = true;
@@ -217,7 +227,7 @@ class Greeter implements GreeterClass {
     this.authentication_user = username;
     this.in_authentication = true;
     if (username == null) {
-      this.show_prompt._emit("login:", 0);
+      signalToSignal(this.show_prompt)._emit("login:", 0);
     }
     return true;
   }
@@ -270,17 +280,17 @@ class Greeter implements GreeterClass {
     if (!this.in_authentication) return false;
     if (this.authentication_user == null) {
       this.authentication_user = response;
-      this.show_prompt._emit("Password: ", 1);
+      signalToSignal(this.show_prompt)._emit("Password: ", 1);
     } else {
       if (response === this.mock_password) {
         this.is_authenticated = true;
         this.in_authentication = false;
-        this.authentication_complete._emit();
+        signalToSignal(this.authentication_complete)._emit();
       } else {
         setTimeout(() => {
           this.is_authenticated = false;
-          this.authentication_complete._emit();
-          this.show_prompt._emit("Password: ", 1);
+          signalToSignal(this.authentication_complete)._emit();
+          signalToSignal(this.show_prompt)._emit("Password: ", 1);
         }, 3000);
       }
     }
@@ -369,7 +379,7 @@ class ThemeUtils implements ThemeUtilsClass {
   }
   dirlist(
     path: string,
-    only_images = true, // eslint-disable-line
+    _only_images = true, // eslint-disable-line
     callback: (files: string[]) => void
   ) {
     if ("" === path || "string" !== typeof path) {
@@ -390,7 +400,7 @@ class ThemeUtils implements ThemeUtilsClass {
     }
   }
   // eslint-disable-next-line
-  dirlist_sync(path: string, only_images = true): string[] {
+  dirlist_sync(_path: string, _only_images = true): string[] {
     return [];
   }
 
